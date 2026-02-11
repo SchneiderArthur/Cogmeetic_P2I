@@ -1,0 +1,202 @@
+/* Conteneur de la page */
+.poulpage-container {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+}
+
+/* Carte centrale avec bord arrondi et dégradé arc-en-ciel */
+.poul-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 16px 14px 22px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #ffb6c1, #ffcba4, #c8ffdf, #b7c8ff);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+}
+
+/* Titre */
+.poul-title {
+    text-align: center;
+    margin: 4px 0 10px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+/* Checkbox "Je laisse l’algo" */
+.poul-auto-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.poul-auto-row input {
+    width: 16px;
+    height: 16px;
+}
+
+/* Zone des 5 rangs */
+.poul-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+/* Un rang */
+.poul-slot {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Numéro 1,2,3,4,5 */
+.poul-rank {
+    width: 20px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* Contenu du slot (fond arrondi + poulpe + select) */
+.poul-slot-inner {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 20px;
+    padding: 6px 10px;
+    background: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Couleur par rang (or / argent / bronze / blanc / bleu) */
+.rank-1 .poul-slot-inner {
+    background: linear-gradient(135deg, #ffd44a, #ffef9f);
+}
+
+.rank-2 .poul-slot-inner {
+    background: linear-gradient(135deg, #d9d9d9, #f2f2f2);
+}
+
+.rank-3 .poul-slot-inner {
+    background: linear-gradient(135deg, #e6a266, #ffd1a1);
+}
+
+.rank-4 .poul-slot-inner {
+    background: white;
+}
+
+.rank-5 .poul-slot-inner {
+    background: white;
+}
+
+/* Petit avatar poulpe rond */
+.poul-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 20%, #ffffff, #f0f0ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+/* Select */
+.poul-select {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Texte explicatif */
+.poul-help-text {
+    margin-top: 8px;
+    font-size: 13px;
+    text-align: center;
+    color: #444;
+}
+
+.poul-help-text p {
+    margin: 2px 0;
+}
+
+/* Carte "Temps restant avant Session Poulpage" */
+.poul-timer-card {
+    margin-top: 14px;
+    border-radius: 18px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.poul-timer-header {
+    background: linear-gradient(135deg, #ffb6c1, #b7c8ff);
+    color: #222;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    padding: 6px 8px;
+}
+
+.poul-timer-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px 8px;
+    font-size: 22px;
+}
+
+.poul-timer-icon {
+    font-size: 20px;
+}
+
+.poul-timer-text {
+    font-weight: 700;
+}
+
+/* Bouton Sauvegarder */
+.poul-save-btn {
+    display: block;
+    margin: 18px auto 0;
+    padding: 10px 24px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #ff5a5f, #ff8a80);
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(255, 90, 95, 0.4);
+}
+
+.poul-save-btn:hover {
+    transform: translateY(-1px);
+}
+
+.poul-save-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive très petit écran */
+@media (max-width: 380px) {
+    .poul-card {
+        padding: 12px 10px 18px;
+        border-radius: 22px;
+    }
+
+    .poul-slot-inner {
+        padding: 5px 8px;
+    }
+
+    .poul-save-btn {
+        width: 100%;
+    }
+}

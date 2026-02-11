@@ -1,0 +1,73 @@
+/* src/styles/evenements.css */
+
+.events-container h2 {
+    margin-bottom: 12px;
+}
+
+/* Liste des events */
+.events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Carte d'évènement */
+.event-card {
+    border-radius: 16px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Bandeau image */
+.event-image-wrapper {
+    width: 100%;
+    height: 140px;
+    overflow: hidden;
+}
+
+.event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenu texte */
+.event-content {
+    padding: 10px 12px 12px;
+}
+
+.event-date {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #f3f3f3;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.event-title {
+    margin: 4px 0;
+    font-size: 16px;
+}
+
+.event-meta {
+    font-size: 13px;
+    color: #666;
+}
+
+/* 🖥️ Écrans plus larges : grille 2 colonnes */
+@media (min-width: 800px) {
+    .events-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .event-image-wrapper {
+        height: 160px;
+    }
+}

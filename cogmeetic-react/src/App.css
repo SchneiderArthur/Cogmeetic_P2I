@@ -1,0 +1,93 @@
+/* Conteneur global de l'appli */
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f7f7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+}
+
+/* Header avec logo */
+.app-header {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.logo {
+  height: 28px;
+}
+
+/* Zone centrale scrollable */
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+  margin-bottom: 60px;
+  /* padding horizontal géré par page-container */
+}
+
+/* Contenu centré avec largeur max (toutes les pages) */
+.page-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Bottom nav type app mobile */
+.bottom-nav {
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  background: white;
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  font-size: 11px;
+  color: #999;
+}
+
+.nav-item .nav-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.nav-item.active {
+  color: #ff5a5f;
+}
+
+/* 📱 Petits écrans : on compacte un peu */
+@media (max-width: 600px) {
+  .app-main {
+    padding: 12px 0;
+  }
+
+  .page-container {
+    padding: 0 12px;
+  }
+
+  .bottom-nav {
+    height: 56px;
+  }
+
+  .nav-item .nav-icon {
+    font-size: 18px;
+  }
+
+  .nav-item {
+    font-size: 10px;
+  }
+}

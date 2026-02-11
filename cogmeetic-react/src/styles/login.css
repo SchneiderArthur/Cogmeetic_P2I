@@ -1,0 +1,189 @@
+/* === Page & fond dégradé ======================================= */
+
+.login-page {
+    min-height: calc(100vh - 60px);
+    /* laisse de la place pour la bottom-nav */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 16px 80px;
+}
+
+.gradient-bg {
+    background:
+        /* Orange en haut à gauche */
+        radial-gradient(circle at 0% 0%,
+            #cea060 0%,
+            /* orange vif */
+            #ffd166 35%,
+            /* orange/jaune plus clair */
+            transparent 70%),
+
+        /* Grosse zone rose au centre */
+        radial-gradient(circle at 55% 45%,
+            #ff9ad9 0%,
+            /* rose clair */
+            #e86fa9 30%,
+            transparent 90%),
+
+        /* Légère touche turquoise en bas à droite (facultatif) */
+        radial-gradient(circle at 90% 90%,
+            #9ff6ff 0%,
+            transparent 55%),
+
+        /* Fond bleu global */
+        #8ec5fc;
+    /* bleu clair de base */
+
+    background-size: 100% 100%;
+    animation: gradientMove 18s ease-in-out infinite alternate;
+}
+
+
+
+
+
+
+/* === Carte centrale ============================================ */
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 24px;
+    padding: 24px 20px 28px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* === Slogan “SWIPE. MATCH. PARRAINE.” ========================= */
+
+.login-slogan {
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.login-slogan p {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #333;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.login-slogan-underline {
+    margin-top: 6px;
+    width: 80px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+/* === Titres / textes ========================================== */
+
+.login-title {
+    font-size: 22px;
+    margin: 8px 0 14px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.login-help-text {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+/* message d’erreur */
+.login-error {
+    font-size: 12px;
+    color: #d9534f;
+    margin-top: 4px;
+}
+
+/* === Formulaire =============================================== */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.login-input {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+.login-input::placeholder {
+    color: #bbb;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #ff5a5f;
+    box-shadow: 0 0 0 1px rgba(255, 90, 95, 0.3);
+}
+
+.login-button {
+    margin-top: 8px;
+    padding: 12px 16px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #ff5a5f, #ff9966);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: default;
+}
+
+/* === Pied de carte (lien “Déjà un compte ? …”) ================= */
+
+.login-footer {
+    margin-top: 16px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.login-footer a {
+    color: #ff5a5f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* === Boutons promo (étape 2 de l’inscription) ================== */
+
+.promo-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.promo-btn {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #7b4ba9;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.promo-btn.active {
+    background: #7b4ba9;
+    color: #fff;
+}

@@ -1,0 +1,154 @@
+/* Conteneur global du tuto */
+.tuto-container {
+    min-height: calc(100vh - 60px);
+    /* laisse la place à la bottom-nav */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px 80px;
+}
+
+/* Carte centrale */
+.tuto-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.96);
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    padding: 24px 20px 28px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    animation: tutoFadeIn 0.35s ease-out;
+}
+
+/* Indicateur d'étapes (petits points) */
+.tuto-step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.tuto-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+.tuto-dot.active {
+    background: #ff5a5f;
+    width: 18px;
+}
+
+/* Titre & sous-titre */
+.tuto-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.tuto-subtitle {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.tuto-subtitle-danger {
+    color: #ff3b30;
+    /* rouge iOS style */
+}
+
+/* Texte du tuto */
+.tuto-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+/* Si tu veux parfois centrer certaines phrases (optionnel) */
+.tuto-text.center {
+    text-align: center;
+}
+
+/* Bouton suivant */
+.tuto-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #ff5a5f, #ff9966);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(255, 90, 95, 0.35);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s ease;
+}
+
+.tuto-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(255, 90, 95, 0.4);
+}
+
+.tuto-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    opacity: 0.9;
+}
+
+/* Animation d’apparition de la carte */
+@keyframes tutoFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 📱 Mobile très petit : on resserre un peu la carte */
+@media (max-width: 360px) {
+    .tuto-card {
+        padding: 18px 14px 22px;
+        border-radius: 18px;
+    }
+
+    .tuto-title {
+        font-size: 18px;
+    }
+
+    .tuto-text {
+        font-size: 13px;
+    }
+}
+
+/* 💻 Tablette / desktop : un peu plus large et plus “aéré” */
+@media (min-width: 768px) {
+    .tuto-container {
+        padding: 40px 24px 80px;
+    }
+
+    .tuto-card {
+        max-width: 520px;
+        padding: 28px 28px 32px;
+    }
+
+    .tuto-title {
+        font-size: 22px;
+    }
+
+    .tuto-text {
+        font-size: 15px;
+    }
+}
