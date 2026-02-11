@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Link, useLocation } from 'react-router-dom';
+import './App.css';
+import logoCogmeetic from './images/logo-cogmeetic.png';
 
-function App() {
-  const [count, setCount] = useState(0)
+function App({ children }) {
+  const location = useLocation();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-root">
+      {/* Header avec logo */}
+      <header className="app-header">
+        <img
+          src={logoCogmeetic}
+          alt="Cogmeetic"
+          className="logo"
+        />
+      </header>
+
+      {/* Contenu central */}
+      <main className="app-main">
+        {children}
+      </main>
+
+      {/* Navbar du bas (type app mobile) */}
+      <nav className="bottom-nav">
+        <NavItem to="/" label="Jeux" icon="🎮" currentPath={location.pathname} />
+        <NavItem to="/chat" label="Chat" icon="💬" currentPath={location.pathname} />
+        <NavItem to="/poulpage" label="Poulpes" icon="🐙" currentPath={location.pathname} />
+        <NavItem to="/evenements" label="Explore" icon="⭐" currentPath={location.pathname} />
+        <NavItem to="/profil" label="Profil" icon="👤" currentPath={location.pathname} />
+        {/* Si tu veux montrer l'admin dans la nav : */}
+        {/* <NavItem to="/admin/matches" label="Admin" icon="🛠️" currentPath={location.pathname} /> */}
+      </nav>
+    </div>
+  );
 }
 
-export default App
+function NavItem({ to, label, icon, currentPath }) {
+  const isActive = currentPath === to;
+
+  return (
+    <Link to={to} className={`nav-item ${isActive ? 'active' : ''}`}>
+      <span className="nav-icon">{icon}</span>
+      <span className="nav-label">{label}</span>
+    </Link>
+  );
+}
+
+export default App;
