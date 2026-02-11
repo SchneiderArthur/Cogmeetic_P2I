@@ -57,7 +57,7 @@
   color: #ff5a5f;
 }
 
-/* 📱 Petits écrans : on compacte un peu */
+/*  Petits écrans : on compacte un peu */
 @media (max-width: 600px) {
   .app-main {
     padding: 12px 0;
