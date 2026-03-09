@@ -64,9 +64,16 @@ function computeCompatibility(userIdA, userIdB) {
     return common === 0 ? 0 : same / common;
 }
 
+// Retourne les 3 questions du jour en fonction de la date (rotation cyclique)
+function getTodayQuestions() {
+    const dayIndex = Math.floor(Date.now() / 86400000); // jours depuis epoch UTC
+    const n = QUESTIONS.length;
+    return [0, 1, 2].map(i => QUESTIONS[(dayIndex * 3 + i) % n]);
+}
+
 function hasCompletedToday(userId) {
     const today = new Date().toISOString().slice(0, 10);
-    const todayIds = QUESTIONS.slice(0, 3).map(q => q.id);
+    const todayIds = getTodayQuestions().map(q => q.id);
 
     const count = db.prepare(
         `SELECT COUNT(*) as cnt FROM answers
@@ -303,7 +310,7 @@ app.get('/api/questions/today', authMiddleware, (req, res) => {
     if (hasCompletedToday(req.user.id)) {
         return res.json([]);
     }
-    res.json(QUESTIONS.slice(0, 3));
+    res.json(getTodayQuestions());
 });
 
 // Poster une réponse

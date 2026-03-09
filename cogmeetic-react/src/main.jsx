@@ -1,9 +1,10 @@
 // src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import App from './App.jsx';
+import { getToken } from './api.js';
 
 import Jeux from './pages/Jeux.jsx';
 import Chat from './pages/Chat.jsx';
@@ -12,32 +13,38 @@ import Profil from './pages/Profil.jsx';
 import Poulpage from './pages/Poulpage.jsx';
 import Evenements from './pages/Evenements.jsx';
 import AdminMatches from './pages/AdminMatches.jsx';
-import Login from './pages/login.jsx';      // attention au nom du fichier (login.jsx)
+import Login from './pages/login.jsx';
 import Tuto from './pages/Tuto.jsx';
 import Signup from './pages/Signup.jsx';
 
-
 import './index.css';
+
+// Redirige vers /login si pas de token
+function ProtectedRoute({ children }) {
+  if (!getToken()) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* App = layout global (logo + bottom nav) */}
       <App>
         <Routes>
-          {/* Connexion + tuto */}
+          {/* Pages publiques */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/tuto" element={<Tuto />} />
 
-          {/* Pages principales */}
-          <Route path="/" element={<Jeux />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/chat/:id" element={<ChatConversation />} /> {/* nouvelle page */}
-          <Route path="/profil" element={<Profil />} />
-          <Route path="/poulpage" element={<Poulpage />} />
-          <Route path="/evenements" element={<Evenements />} />
-          <Route path="/admin/matches" element={<AdminMatches />} />
+          {/* Pages protégées */}
+          <Route path="/" element={<ProtectedRoute><Jeux /></ProtectedRoute>} />
+          <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+          <Route path="/chat/:id" element={<ProtectedRoute><ChatConversation /></ProtectedRoute>} />
+          <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
+          <Route path="/poulpage" element={<ProtectedRoute><Poulpage /></ProtectedRoute>} />
+          <Route path="/evenements" element={<ProtectedRoute><Evenements /></ProtectedRoute>} />
+          <Route path="/admin/matches" element={<ProtectedRoute><AdminMatches /></ProtectedRoute>} />
         </Routes>
       </App>
     </BrowserRouter>
