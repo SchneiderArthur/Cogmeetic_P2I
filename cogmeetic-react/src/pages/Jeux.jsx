@@ -1,8 +1,8 @@
 // src/pages/Jeux.jsx
 import { useEffect, useState } from 'react';
+import { authFetch, getUser } from '../api';
 import '../styles/jeux.css';
 
-const API_URL = import.meta.env.VITE_API_ADDRESS;
 const SWIPE_THRESHOLD = 120;
 
 // Mini-jeux “fakes” pour après le Tu préfères
@@ -26,7 +26,7 @@ const MINI_GAMES = [
 
 function Jeux() {
     // 1) On récupère l'utilisateur connecté depuis le localStorage
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const user = getUser();
     const CURRENT_USER_ID = user?.id;
 
     // Pas connecté → on bloque
@@ -59,9 +59,7 @@ function Jeux() {
             try {
                 setLoading(true);
                 setError(null);
-                const res = await fetch(
-                    `${API_URL}/api/questions/today?userId=${CURRENT_USER_ID}`,
-                );
+                const res = await authFetch('/api/questions/today');
                 if (!res.ok) throw new Error('Erreur API');
                 const data = await res.json();
                 setQuestions(data);
@@ -123,14 +121,9 @@ function Jeux() {
         if (!question) return;
 
         try {
-            await fetch(`${API_URL}/api/answers`, {
+            await authFetch('/api/answers', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userId: CURRENT_USER_ID,
-                    questionId: question.id,
-                    choix: cote, // 'left' ou 'right'
-                }),
+                body: JSON.stringify({ questionId: question.id, choix: cote }),
             });
         } catch (err) {
             console.error('Erreur en envoyant la réponse', err);

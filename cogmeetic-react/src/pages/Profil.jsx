@@ -1,13 +1,12 @@
 // src/pages/Profil.jsx
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authFetch, getUser, logout } from '../api';
 import '../styles/profil.css';
-
-const API_URL = import.meta.env.VITE_API_ADDRESS;
 
 function Profil() {
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const user = getUser();
     const CURRENT_USER_ID = user?.id;
 
     if (!CURRENT_USER_ID) {
@@ -33,7 +32,7 @@ function Profil() {
             try {
                 setLoading(true);
                 setError(null);
-                const res = await fetch(`${API_URL}/api/profile?userId=${CURRENT_USER_ID}`);
+                const res = await authFetch('/api/profile');
                 if (!res.ok) throw new Error('Erreur API profil');
                 const data = await res.json();
                 setProfile(data);
@@ -49,7 +48,7 @@ function Profil() {
     }, [CURRENT_USER_ID]);
 
     function handleLogout() {
-        localStorage.removeItem('user');
+        logout();
         navigate('/login');
     }
 
@@ -69,11 +68,9 @@ function Profil() {
             setError(null);
             setMessage(null);
 
-            const res = await fetch(`${API_URL}/api/profile`, {
+            const res = await authFetch('/api/profile', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    userId: CURRENT_USER_ID,
                     bio: profile.bio || '',
                     centresInterets: profile.centresInterets || '',
                     contact: profile.contact || '',

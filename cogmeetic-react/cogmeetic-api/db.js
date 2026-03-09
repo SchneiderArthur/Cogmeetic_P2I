@@ -1,0 +1,48 @@
+const Database = require('better-sqlite3');
+const path = require('path');
+
+const db = new Database(path.join(__dirname, 'cogmeetic.db'));
+
+// Activer les foreign keys
+db.pragma('journal_mode = WAL');
+db.pragma('foreign_keys = ON');
+
+// Création des tables
+db.exec(`
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    login TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    promo TEXT NOT NULL CHECK(promo IN ('1A', '2A'))
+  );
+
+  CREATE TABLE IF NOT EXISTS answers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    question_id INTEGER NOT NULL,
+    choix TEXT NOT NULL,
+    answered_at TEXT NOT NULL DEFAULT (date('now')),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE(user_id, question_id, answered_at)
+  );
+
+  CREATE TABLE IF NOT EXISTS top5 (
+    user_id INTEGER NOT NULL,
+    rank INTEGER NOT NULL CHECK(rank BETWEEN 1 AND 5),
+    target_user_id INTEGER NOT NULL,
+    PRIMARY KEY (user_id, rank),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (target_user_id) REFERENCES users(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS profiles (
+    user_id INTEGER PRIMARY KEY,
+    bio TEXT NOT NULL DEFAULT '',
+    centres_interets TEXT NOT NULL DEFAULT '',
+    contact TEXT NOT NULL DEFAULT '',
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+`);
+
+module.exports = db;

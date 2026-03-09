@@ -1,9 +1,8 @@
 // src/pages/Evenements.jsx
 import { useEffect, useState } from 'react';
+import { authFetch } from '../api';
 import '../styles/evenements.css';
 import EventCard from '../components/EventCard.jsx';
-
-const API_URL = import.meta.env.VITE_API_ADDRESS;
 
 function Evenements() {
     const [events, setEvents] = useState([]);
@@ -13,7 +12,7 @@ function Evenements() {
         async function fetchEvents() {
             try {
                 setLoading(true);
-                const res = await fetch(`${API_URL}/api/events`);
+                const res = await authFetch('/api/events');
                 const data = await res.json();
                 setEvents(data);
             } finally {

@@ -1,10 +1,10 @@
 // src/pages/login.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { saveSession } from '../api';
 import '../styles/login.css';
 
 const API_URL = import.meta.env.VITE_API_ADDRESS;
-console.log(API_URL)
 
 function Login() {
     const navigate = useNavigate();
@@ -29,9 +29,7 @@ function Login() {
             }
 
             const data = await res.json();
-            localStorage.setItem('user', JSON.stringify(data));
-
-            // 🔁 Maintenant : on va directement sur les jeux
+            saveSession({ id: data.id, name: data.name, promo: data.promo }, data.token);
             navigate('/');
         } catch (err) {
             console.error(err);

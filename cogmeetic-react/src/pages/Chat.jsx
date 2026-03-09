@@ -1,12 +1,11 @@
 // src/pages/Chat.jsx
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { authFetch, getUser } from '../api';
 import '../styles/chat.css';
 
-const API_URL = import.meta.env.VITE_API_ADDRESS;
-
 function Chat() {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const user = getUser();
     const CURRENT_USER_ID = user?.id;
 
     const [matches, setMatches] = useState([]);
@@ -24,9 +23,7 @@ function Chat() {
         async function fetchMatches() {
             try {
                 setLoading(true);
-                const res = await fetch(
-                    `${API_URL}/api/users?userId=${CURRENT_USER_ID}`
-                );
+                const res = await authFetch('/api/users');
                 const data = await res.json();
                 setMatches(data);
             } finally {

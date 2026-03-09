@@ -1,11 +1,10 @@
 // src/pages/Poulpage.jsx
 import { useEffect, useState } from 'react';
+import { authFetch, getUser } from '../api';
 import '../styles/poulpage.css';
 
-const API_URL = import.meta.env.VITE_API_ADDRESS;
-
 function Poulpage() {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    const user = getUser();
     const CURRENT_USER_ID = user?.id;
 
     if (!CURRENT_USER_ID) {
@@ -30,9 +29,7 @@ function Poulpage() {
                 setMessage(null);
 
                 // 1) users de l'autre promo + compat
-                const resUsers = await fetch(
-                    `${API_URL}/api/users?userId=${CURRENT_USER_ID}`
-                );
+                const resUsers = await authFetch('/api/users');
                 if (!resUsers.ok) throw new Error('Erreur users');
                 const users = await resUsers.json();
 
@@ -42,9 +39,7 @@ function Poulpage() {
                 setAllUsers(sorted);
 
                 // 2) top5 déjà enregistré
-                const resTop = await fetch(
-                    `${API_URL}/api/top5?userId=${CURRENT_USER_ID}`
-                );
+                const resTop = await authFetch('/api/top5');
                 if (!resTop.ok) throw new Error('Erreur top5');
                 const topUsers = await resTop.json();
 
@@ -102,10 +97,9 @@ function Poulpage() {
 
             const cleanTop = top5.filter(Boolean);
 
-            const res = await fetch(`${API_URL}/api/top5`, {
+            const res = await authFetch('/api/top5', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId: CURRENT_USER_ID, top5: cleanTop }),
+                body: JSON.stringify({ top5: cleanTop }),
             });
 
             if (!res.ok) throw new Error('Erreur API');

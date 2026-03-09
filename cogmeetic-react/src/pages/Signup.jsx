@@ -1,11 +1,13 @@
 // src/pages/Signup.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { saveSession } from '../api';
 import '../styles/login.css';
+
+const API_URL = import.meta.env.VITE_API_ADDRESS;
 
 function Signup() {
     const [step, setStep] = useState(1);
-
     const [prenom, setPrenom] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
@@ -14,20 +16,19 @@ function Signup() {
 
     const navigate = useNavigate();
 
-    // Étape 1 : prénom + mot de passe
     function handleSubmitStep1(e) {
         e.preventDefault();
 
         if (!prenom.trim()) {
-            setError('Merci de renseigner ton prénom.');
+            setError("Merci de renseigner ton prénom.");
             return;
         }
         if (password.length < 4) {
-            setError('Choisis un mot de passe d’au moins 4 caractères.');
+            setError("Choisis un mot de passe d'au moins 4 caractères.");
             return;
         }
         if (password !== password2) {
-            setError('Les mots de passe ne correspondent pas.');
+            setError("Les mots de passe ne correspondent pas.");
             return;
         }
 
@@ -35,36 +36,46 @@ function Signup() {
         setStep(2);
     }
 
-    // Étape 2 : promo
-    function handleSubmitStep2(e) {
+    async function handleSubmitStep2(e) {
         e.preventDefault();
 
         if (!promo) {
-            setError('Merci de choisir ta promo.');
+            setError("Merci de choisir ta promo.");
             return;
         }
 
         setError('');
 
-        // Pour la démo : on garde les infos quelque part si tu veux les réutiliser
-        const tempSignup = {
-            prenom: prenom.trim(),
-            promo,
-            password,
-        };
-        localStorage.setItem('signup_demo', JSON.stringify(tempSignup));
+        try {
+            const res = await fetch(`${API_URL}/api/signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: prenom.trim(),
+                    login: prenom.trim().toLowerCase(),
+                    password,
+                    promo,
+                }),
+            });
 
-        // Flag pour dire qu’on vient de s’inscrire → on affiche le tuto
-        localStorage.setItem('just_signed_up', 'true');
+            const data = await res.json();
 
-        // On enchaîne sur le tuto (et après le tuto tu rediriges vers /login ou /)
-        navigate('/tuto');
+            if (!res.ok) {
+                setError(data.error || "Erreur lors de l'inscription");
+                return;
+            }
+
+            saveSession({ id: data.id, name: data.name, promo: data.promo }, data.token);
+            navigate('/tuto');
+        } catch (err) {
+            console.error(err);
+            setError("Impossible de contacter le serveur");
+        }
     }
 
     return (
         <div className="login-page gradient-bg">
             <div className="login-card">
-                {/* Slogan comme sur la maquette */}
                 <div className="login-slogan">
                     <p>SWIPE. MATCH.</p>
                     <p>PARRAINE.</p>
@@ -83,7 +94,6 @@ function Signup() {
                                 value={prenom}
                                 onChange={(e) => setPrenom(e.target.value)}
                             />
-
                             <input
                                 className="login-input"
                                 type="password"
@@ -91,7 +101,6 @@ function Signup() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-
                             <input
                                 className="login-input"
                                 type="password"
@@ -116,7 +125,7 @@ function Signup() {
 
                 {step === 2 && (
                     <>
-                        <h2 className="login-title">En quelle année es-tu à l’ENSC ?</h2>
+                        <h2 className="login-title">En quelle année es-tu à l&apos;ENSC ?</h2>
                         <p className="login-help-text">Tu ne pourras pas le changer après.</p>
 
                         <form className="login-form" onSubmit={handleSubmitStep2}>

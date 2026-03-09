@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cogmeetic – Document d'avancement</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #1a1a2e;
+      background: #fff;
+      font-size: 11pt;
+      line-height: 1.6;
+    }
+
+    /* ── Page ── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 20mm 20mm 18mm 20mm;
+    }
+
+    @media print {
+      .page { margin: 0; padding: 16mm 18mm; }
+      .page-break { page-break-before: always; }
+    }
+
+    /* ── Header ── */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 3px solid #e63946;
+      padding-bottom: 14px;
+      margin-bottom: 28px;
+    }
+
+    .doc-header-left h1 {
+      font-size: 22pt;
+      font-weight: 800;
+      color: #e63946;
+      letter-spacing: -0.5px;
+    }
+
+    .doc-header-left .subtitle {
+      font-size: 10pt;
+      color: #555;
+      margin-top: 2px;
+    }
+
+    .doc-header-right {
+      text-align: right;
+      font-size: 9pt;
+      color: #777;
+      line-height: 1.8;
+    }
+
+    /* ── Sections ── */
+    h2 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #e63946;
+      margin: 24px 0 10px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #f0d0d3;
+    }
+
+    h3 {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 14px 0 6px 0;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    /* ── Tableaux ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px 0;
+      font-size: 10pt;
+    }
+
+    th {
+      background: #e63946;
+      color: white;
+      padding: 7px 10px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #f0e8e8;
+    }
+
+    tr:nth-child(even) td { background: #fdf5f5; }
+
+    /* ── Badges statut ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 8.5pt;
+      font-weight: 600;
+    }
+
+    .badge-done   { background: #d4edda; color: #155724; }
+    .badge-partial { background: #fff3cd; color: #856404; }
+    .badge-todo   { background: #f8d7da; color: #721c24; }
+
+    /* ── Listes ── */
+    ul {
+      padding-left: 18px;
+      margin-bottom: 10px;
+    }
+
+    li {
+      margin-bottom: 4px;
+      color: #333;
+    }
+
+    /* ── Boîtes ── */
+    .info-box {
+      background: #fdf5f5;
+      border-left: 4px solid #e63946;
+      padding: 10px 14px;
+      margin: 12px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 10pt;
+    }
+
+    .info-box strong { color: #e63946; }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-size: 8.5pt;
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ── Architecture schéma ── */
+    .archi {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 9.5pt;
+    }
+
+    .archi-block {
+      flex: 1;
+      border: 1.5px solid #e63946;
+      border-radius: 8px;
+      padding: 8px 12px;
+    }
+
+    .archi-block h4 {
+      color: #e63946;
+      font-size: 10pt;
+      margin-bottom: 4px;
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      font-size: 18pt;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ PAGE 1 ═══════════════ -->
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <h1>Cogmeetic</h1>
+      <div class="subtitle">Document d'avancement — Projet P2I individuel</div>
+    </div>
+    <div class="doc-header-right">
+      SCHNEIDER Arthur · 2A Groupe 2<br>
+      ENSC Bordeaux INP<br>
+      Mars 2026
+    </div>
+  </div>
+
+  <h2>1. Présentation du projet</h2>
+
+  <p>
+    Cogmeetic est une application web de parrainage destinée aux élèves de l'ENSC. Elle vise à
+    remplacer les formulaires Excel et échanges informels actuellement utilisés pour constituer les
+    binômes parrain/filleul. L'application s'appuie sur un mini-jeu de type « Tu préfères… », des
+    profils utilisateur et un algorithme de compatibilité pour suggérer les meilleurs couples 1A / 2A.
+  </p>
+
+  <div class="archi">
+    <div class="archi-block">
+      <h4>Frontend</h4>
+      React + Vite<br>
+      React Router<br>
+      CSS par page<br>
+      Responsive mobile
+    </div>
+    <div class="arrow">⇄</div>
+    <div class="archi-block">
+      <h4>API REST</h4>
+      Node.js + Express<br>
+      JWT (authentification)<br>
+      Bcrypt (mots de passe)<br>
+      Port 4000
+    </div>
+    <div class="arrow">⇄</div>
+    <div class="archi-block">
+      <h4>Base de données</h4>
+      SQLite<br>
+      better-sqlite3<br>
+      4 tables<br>
+      Persistant sur disque
+    </div>
+  </div>
+
+  <h2>2. Ce qui a été réalisé</h2>
+
+  <h3>2.1 Backend — API REST complète</h3>
+
+  <table>
+    <tr>
+      <th>Endpoint</th>
+      <th>Fonction</th>
+      <th>Statut</th>
+    </tr>
+    <tr><td>POST /api/signup</td><td>Inscription avec hash bcrypt + token JWT</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>POST /api/login</td><td>Connexion + vérification mot de passe</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET /api/questions/today</td><td>3 questions par jour par utilisateur</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>POST /api/answers</td><td>Enregistrement des réponses</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET /api/users</td><td>Utilisateurs de la promo opposée + score de compatibilité</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET/PUT /api/profile</td><td>Consultation et mise à jour du profil</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET/POST /api/top5</td><td>Lecture et sauvegarde du classement personnel</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET /api/events</td><td>Liste des événements</td><td><span class="badge badge-done">Fait</span></td></tr>
+    <tr><td>GET /api/matches</td><td>Algorithme de matching 1A/2A pour l'admin</td><td><span class="badge badge-done">Fait</span></td></tr>
+  </table>
+
+  <h3>2.2 Algorithme de matching</h3>
+  <p>
+    L'algorithme fonctionne en trois étapes prioritaires : (1) couples mutuels où chacun a mis l'autre
+    en première position de son Top 5 ; (2) meilleurs couples issus des Top 5 croisés avec un score
+    de préférence pondéré ; (3) appairage des élèves restants par score de compatibilité décroissant.
+    Les élèves non appariés sont également signalés dans la vue admin.
+  </p>
+
+  <h3>2.3 Sécurité et persistance</h3>
+  <ul>
+    <li>Mots de passe hashés avec <strong>bcrypt</strong> (coût 10) — aucun mot de passe en clair</li>
+    <li>Authentification par <strong>token JWT</strong> valable 30 jours — toutes les routes protégées</li>
+    <li>Données stockées dans une base <strong>SQLite</strong> persistante sur disque</li>
+    <li>Vérification de l'unicité du pseudo à l'inscription</li>
+  </ul>
+
+  <div class="doc-footer">
+    <span>Cogmeetic — Document d'avancement — SCHNEIDER Arthur</span>
+    <span>Page 1 / 3</span>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PAGE 2 ═══════════════ -->
+<div class="page page-break">
+
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <h1>Cogmeetic</h1>
+      <div class="subtitle">Document d'avancement — Projet P2I individuel</div>
+    </div>
+    <div class="doc-header-right">
+      SCHNEIDER Arthur · 2A Groupe 2<br>
+      ENSC Bordeaux INP<br>
+      Mars 2026
+    </div>
+  </div>
+
+  <h2>2. Ce qui a été réalisé (suite)</h2>
+
+  <h3>2.4 Frontend — Pages implémentées</h3>
+
+  <table>
+    <tr>
+      <th>Page</th>
+      <th>Fonctionnalités</th>
+      <th>Statut</th>
+    </tr>
+    <tr>
+      <td><strong>Inscription</strong> (/signup)</td>
+      <td>Formulaire 2 étapes, appel API réel, sauvegarde du token</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Connexion</strong> (/login)</td>
+      <td>Authentification JWT, redirection automatique</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Tutoriel</strong> (/tuto)</td>
+      <td>Onboarding affiché une seule fois après inscription</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Jeux</strong> (/)</td>
+      <td>Swipe gauche/droite, 3 questions/jour, mini-jeux placeholder</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Poulpage</strong> (/poulpage)</td>
+      <td>Classement Top 5 manuel ou automatique, sauvegarde</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Profil</strong> (/profil)</td>
+      <td>Lecture + édition (bio, centres d'intérêt, contact), déconnexion</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Événements</strong> (/evenements)</td>
+      <td>Liste d'événements avec visuels, dates, prix</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Admin</strong> (/admin/matches)</td>
+      <td>Vue des couples proposés avec indicateurs (compatibilité, rangs)</td>
+      <td><span class="badge badge-done">Fait</span></td>
+    </tr>
+    <tr>
+      <td><strong>Chat</strong> (/chat)</td>
+      <td>Liste des utilisateurs de la promo opposée (UI en place)</td>
+      <td><span class="badge badge-partial">Partiel</span></td>
+    </tr>
+  </table>
+
+  <h3>2.5 Infrastructure</h3>
+  <ul>
+    <li>Toutes les requêtes API utilisent un utilitaire centralisé (<strong>authFetch</strong>) qui injecte automatiquement le token JWT</li>
+    <li>Build de production fonctionnel (<code>npm run build</code>)</li>
+    <li>Variables d'environnement via fichier <code>.env</code> (URL de l'API configurable)</li>
+    <li>Navigation mobile avec barre du bas (Jeux, Événements, Poulpage, Chat, Profil)</li>
+  </ul>
+
+  <h2>3. Ce qui reste à faire</h2>
+
+  <h3>3.1 Priorité haute — nécessaire avant le déploiement</h3>
+
+  <table>
+    <tr>
+      <th>Tâche</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><strong>Déploiement</strong></td>
+      <td>Héberger le backend et le frontend sur un serveur accessible (ex : Railway, Render ou VPS)</td>
+    </tr>
+    <tr>
+      <td><strong>Redirection login</strong></td>
+      <td>Rediriger automatiquement vers /login si l'utilisateur n'est pas connecté (toutes les pages)</td>
+    </tr>
+    <tr>
+      <td><strong>Rotation des questions</strong></td>
+      <td>Implémenter un vrai système de 3 questions différentes par jour (actuellement toujours les 3 premières)</td>
+    </tr>
+    <tr>
+      <td><strong>Enrichir les questions</strong></td>
+      <td>Actuellement 5 questions seulement — prévoir au moins 30-40 pour un mois d'utilisation</td>
+    </tr>
+    <tr>
+      <td><strong>Protection admin</strong></td>
+      <td>La page /admin/matches est accessible sans mot de passe admin</td>
+    </tr>
+  </table>
+
+  <div class="doc-footer">
+    <span>Cogmeetic — Document d'avancement — SCHNEIDER Arthur</span>
+    <span>Page 2 / 3</span>
+  </div>
+
+</div>
+
+<!-- ═══════════════ PAGE 3 ═══════════════ -->
+<div class="page page-break">
+
+  <div class="doc-header">
+    <div class="doc-header-left">
+      <h1>Cogmeetic</h1>
+      <div class="subtitle">Document d'avancement — Projet P2I individuel</div>
+    </div>
+    <div class="doc-header-right">
+      SCHNEIDER Arthur · 2A Groupe 2<br>
+      ENSC Bordeaux INP<br>
+      Mars 2026
+    </div>
+  </div>
+
+  <h2>3. Ce qui reste à faire (suite)</h2>
+
+  <h3>3.2 Priorité moyenne — amélioration de l'expérience</h3>
+
+  <table>
+    <tr>
+      <th>Tâche</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><strong>Chat fonctionnel</strong></td>
+      <td>Implémenter la messagerie réelle entre utilisateurs (WebSocket ou polling). L'UI est en place mais les messages ne sont pas encore envoyés/reçus.</td>
+    </tr>
+    <tr>
+      <td><strong>Notification de match</strong></td>
+      <td>Informer l'utilisateur lorsqu'une personne l'a mis dans son Top 5</td>
+    </tr>
+    <tr>
+      <td><strong>Consultation de profil</strong></td>
+      <td>Permettre de consulter le profil d'un autre élève depuis la liste de compatibilité ou le chat</td>
+    </tr>
+    <tr>
+      <td><strong>Événements dynamiques</strong></td>
+      <td>Actuellement les événements sont codés en dur dans un fichier JS — les rendre éditables via une interface admin</td>
+    </tr>
+    <tr>
+      <td><strong>Gestion des erreurs de session</strong></td>
+      <td>Déconnecter proprement l'utilisateur si son token expire (erreur 401 → redirection /login)</td>
+    </tr>
+  </table>
+
+  <h3>3.3 Priorité basse — améliorations futures</h3>
+
+  <table>
+    <tr>
+      <th>Tâche</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><strong>Photo de profil</strong></td>
+      <td>Permettre à chaque élève d'uploader une photo</td>
+    </tr>
+    <tr>
+      <td><strong>Export admin</strong></td>
+      <td>Exporter la liste finale des couples en CSV ou PDF depuis la vue admin</td>
+    </tr>
+    <tr>
+      <td><strong>Compatibilité affinée</strong></td>
+      <td>Pondérer les questions selon leur importance pour un meilleur score de compatibilité</td>
+    </tr>
+    <tr>
+      <td><strong>Réinitialisation mot de passe</strong></td>
+      <td>Permettre à un élève de récupérer son compte en cas d'oubli</td>
+    </tr>
+  </table>
+
+  <h2>4. Récapitulatif</h2>
+
+  <div class="info-box">
+    <strong>État actuel :</strong> le prototype est fonctionnel en local. L'ensemble des fonctionnalités
+    décrites dans le cahier des charges est implémenté à l'exception du chat en temps réel.
+    L'authentification est sécurisée, les données sont persistantes, et le build de production est opérationnel.
+    La prochaine étape majeure est le <strong>déploiement sur un serveur</strong> pour permettre
+    une utilisation réelle par les 160 élèves de l'ENSC en septembre.
+  </div>
+
+  <table>
+    <tr>
+      <th>Catégorie</th>
+      <th>Avancement</th>
+    </tr>
+    <tr><td>Backend / API</td><td><span class="badge badge-done">100% — Complet</span></td></tr>
+    <tr><td>Authentification &amp; Sécurité</td><td><span class="badge badge-done">Complet</span></td></tr>
+    <tr><td>Base de données</td><td><span class="badge badge-done">Complet</span></td></tr>
+    <tr><td>Frontend — pages principales</td><td><span class="badge badge-done">Complet</span></td></tr>
+    <tr><td>Frontend — Chat</td><td><span class="badge badge-partial">Partiel (UI seulement)</span></td></tr>
+    <tr><td>Rotation des questions</td><td><span class="badge badge-todo">À faire</span></td></tr>
+    <tr><td>Protection admin</td><td><span class="badge badge-todo">À faire</span></td></tr>
+    <tr><td>Déploiement</td><td><span class="badge badge-todo">À faire</span></td></tr>
+  </table>
+
+  <div class="doc-footer">
+    <span>Cogmeetic — Document d'avancement — SCHNEIDER Arthur</span>
+    <span>Page 3 / 3</span>
+  </div>
+
+</div>
+
+</body>
+</html>

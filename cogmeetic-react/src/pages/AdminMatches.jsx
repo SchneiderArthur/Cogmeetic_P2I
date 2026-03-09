@@ -1,8 +1,7 @@
 // src/pages/AdminMatches.jsx
 import { useEffect, useState } from 'react';
+import { authFetch } from '../api';
 import '../styles/adminMatches.css';
-
-const API_URL = import.meta.env.VITE_API_ADDRESS;
 
 function AdminMatches() {
     const [data, setData] = useState(null);   // { matches, unmatched1, unmatched2 }
@@ -14,7 +13,7 @@ function AdminMatches() {
             try {
                 setLoading(true);
                 setError(null);
-                const res = await fetch(`${API_URL}/api/matches`);
+                const res = await authFetch('/api/matches');
                 if (!res.ok) throw new Error('Erreur API /api/matches');
                 const json = await res.json();
                 setData(json);
