@@ -30,7 +30,8 @@ function Login() {
 
             const data = await res.json();
             saveSession({ id: data.id, name: data.name, promo: data.promo }, data.token);
-            navigate('/');
+            const tutoSeen = localStorage.getItem(`tuto_${data.id}_seen`);
+            navigate(tutoSeen ? '/' : '/tuto');
         } catch (err) {
             console.error(err);
             setError("Erreur de connexion à l'API");
