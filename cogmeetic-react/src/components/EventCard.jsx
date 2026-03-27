@@ -1,6 +1,13 @@
 // src/components/EventCard.jsx
 const API_URL = import.meta.env.VITE_API_ADDRESS;
 
+function formatDate(raw) {
+    if (!raw) return '';
+    const d = new Date(raw + 'T00:00:00');
+    if (isNaN(d)) return raw;
+    return d.toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
 function EventCard({ event }) {
     // event = { id, titre, date, horaire, duree, prix, image }
 
@@ -23,7 +30,7 @@ function EventCard({ event }) {
             )}
 
             <div className="event-content">
-                <div className="event-date">{event.date}</div>
+                <div className="event-date">{formatDate(event.date)}</div>
                 <h3 className="event-title">{event.titre}</h3>
 
                 <p className="event-meta">

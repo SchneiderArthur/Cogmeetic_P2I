@@ -13,6 +13,7 @@ import Profil from './pages/Profil.jsx';
 import Poulpage from './pages/Poulpage.jsx';
 import Evenements from './pages/Evenements.jsx';
 import AdminMatches from './pages/AdminMatches.jsx';
+import AdminEvents from './pages/AdminEvents.jsx';
 import Login from './pages/login.jsx';
 import Tuto from './pages/Tuto.jsx';
 import Signup from './pages/Signup.jsx';
@@ -52,6 +53,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/poulpage" element={<ProtectedRoute><Poulpage /></ProtectedRoute>} />
           <Route path="/evenements" element={<ProtectedRoute><Evenements /></ProtectedRoute>} />
           <Route path="/admin/matches" element={<AdminRoute><AdminMatches /></AdminRoute>} />
+          <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
         </Routes>
       </App>
     </BrowserRouter>

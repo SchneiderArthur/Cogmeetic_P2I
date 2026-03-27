@@ -32,7 +32,10 @@ function App({ children }) {
         <NavItem to="/chat" label="Chat" icon="💬" currentPath={location.pathname} />
         <NavItem to="/profil" label="Profil" icon="👤" currentPath={location.pathname} />
         {user?.isAdmin && (
-          <NavItem to="/admin/matches" label="Admin" icon="🛠️" currentPath={location.pathname} />
+          <NavItem to="/admin/matches" label="Couples" icon="🛠️" currentPath={location.pathname} />
+        )}
+        {user?.isAdmin && (
+          <NavItem to="/admin/events" label="Events" icon="📅" currentPath={location.pathname} />
         )}
       </nav>
     </div>

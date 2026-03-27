@@ -4,10 +4,24 @@ const cors = require('cors');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: path.join(__dirname, 'data', 'images'),
+        filename: (_req, file, cb) => {
+            const ext = path.extname(file.originalname);
+            cb(null, `${Date.now()}${ext}`);
+        },
+    }),
+    fileFilter: (_req, file, cb) => {
+        cb(null, /image\/(jpeg|png|webp|gif)/.test(file.mimetype));
+    },
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo max
+});
 
 const db = require('./db');
 const { QUESTIONS } = require('./data/questions');
-const { EVENTS } = require('./data/events');
 
 const app = express();
 const PORT = 4000;
@@ -376,8 +390,42 @@ app.get('/api/users/:id', authMiddleware, (req, res) => {
     res.json(profile);
 });
 
+// Upload image (admin)
+app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    if (!req.file) return res.status(400).json({ error: 'Aucun fichier reçu' });
+    res.json({ url: `/images/${req.file.filename}` });
+});
+
 // Événements
-app.get('/api/events', authMiddleware, (_req, res) => res.json(EVENTS));
+app.get('/api/events', authMiddleware, (_req, res) => {
+    res.json(db.prepare('SELECT * FROM events ORDER BY id ASC').all());
+});
+
+app.post('/api/events', authMiddleware, (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    const { titre, date, horaire, duree, prix, image } = req.body;
+    if (!titre) return res.status(400).json({ error: 'titre requis' });
+    const result = db.prepare(
+        `INSERT INTO events (titre, date, horaire, duree, prix, image) VALUES (?, ?, ?, ?, ?, ?)`
+    ).run(titre, date || '', horaire || '', duree || '', prix || '', image || '');
+    res.status(201).json(db.prepare('SELECT * FROM events WHERE id = ?').get(result.lastInsertRowid));
+});
+
+app.put('/api/events/:id', authMiddleware, (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    const { titre, date, horaire, duree, prix, image } = req.body;
+    db.prepare(
+        `UPDATE events SET titre=?, date=?, horaire=?, duree=?, prix=?, image=? WHERE id=?`
+    ).run(titre, date || '', horaire || '', duree || '', prix || '', image || '', Number(req.params.id));
+    res.json(db.prepare('SELECT * FROM events WHERE id = ?').get(Number(req.params.id)));
+});
+
+app.delete('/api/events/:id', authMiddleware, (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    db.prepare('DELETE FROM events WHERE id = ?').run(Number(req.params.id));
+    res.json({ status: 'ok' });
+});
 
 // Récupérer le Top 5
 app.get('/api/top5', authMiddleware, (req, res) => {

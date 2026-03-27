@@ -44,11 +44,31 @@ db.exec(`
     contact TEXT NOT NULL DEFAULT '',
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
+
+  CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    titre TEXT NOT NULL,
+    date TEXT NOT NULL DEFAULT '',
+    horaire TEXT NOT NULL DEFAULT '',
+    duree TEXT NOT NULL DEFAULT '',
+    prix TEXT NOT NULL DEFAULT '',
+    image TEXT NOT NULL DEFAULT ''
+  );
 `);
 
 // Migration : ajout is_admin si la colonne n'existe pas encore
 try {
     db.exec(`ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0`);
 } catch (_) { /* colonne déjà présente */ }
+
+// Seed événements par défaut si la table est vide
+const eventCount = db.prepare('SELECT COUNT(*) as cnt FROM events').get();
+if (eventCount.cnt === 0) {
+    const insert = db.prepare(
+        `INSERT INTO events (titre, date, horaire, duree, prix, image) VALUES (?, ?, ?, ?, ?, ?)`
+    );
+    insert.run('Soirée Masquée', 'ven. 5 nov.', '20:00 - 01:00', '05h00', '4€', '/images/soiree-masquee.jpg');
+    insert.run('Night Party', 'lun. 8 nov.', '20:00 - 01:00', '05h00', '4€', '/images/night-party.jpg');
+}
 
 module.exports = db;
