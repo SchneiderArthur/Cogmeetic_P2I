@@ -278,9 +278,9 @@ app.post('/api/signup', async (req, res) => {
     ).run(name, login, password_hash, promo);
 
     const userId = result.lastInsertRowid;
-    const token = jwt.sign({ id: userId, name, promo }, JWT_SECRET, { expiresIn: '30d' });
+    const token = jwt.sign({ id: userId, name, promo, isAdmin: false }, JWT_SECRET, { expiresIn: '30d' });
 
-    res.status(201).json({ id: userId, name, promo, token });
+    res.status(201).json({ id: userId, name, promo, isAdmin: false, token });
 });
 
 // Connexion
@@ -301,8 +301,9 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ error: 'Identifiants invalides' });
     }
 
-    const token = jwt.sign({ id: user.id, name: user.name, promo: user.promo }, JWT_SECRET, { expiresIn: '30d' });
-    res.json({ id: user.id, name: user.name, promo: user.promo, token });
+    const isAdmin = user.is_admin === 1;
+    const token = jwt.sign({ id: user.id, name: user.name, promo: user.promo, isAdmin }, JWT_SECRET, { expiresIn: '30d' });
+    res.json({ id: user.id, name: user.name, promo: user.promo, isAdmin, token });
 });
 
 // Questions du jour
@@ -398,8 +399,9 @@ app.post('/api/top5', authMiddleware, (req, res) => {
     res.json({ status: 'ok', top5: getTop5(req.user.id) });
 });
 
-// Matches admin
-app.get('/api/matches', authMiddleware, (_req, res) => {
+// Matches admin (réservé aux admins)
+app.get('/api/matches', authMiddleware, (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
     res.json(computeMatches());
 });
 

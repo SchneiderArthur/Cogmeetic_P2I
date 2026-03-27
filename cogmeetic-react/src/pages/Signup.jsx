@@ -74,7 +74,7 @@ function Signup() {
                 return;
             }
 
-            saveSession({ id: data.id, name: data.name, promo: data.promo }, data.token);
+            saveSession({ id: data.id, name: data.name, promo: data.promo, isAdmin: data.isAdmin }, data.token);
             navigate('/tuto');
         } catch (err) {
             console.error(err);

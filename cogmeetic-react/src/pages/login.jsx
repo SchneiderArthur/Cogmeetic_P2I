@@ -29,7 +29,7 @@ function Login() {
             }
 
             const data = await res.json();
-            saveSession({ id: data.id, name: data.name, promo: data.promo }, data.token);
+            saveSession({ id: data.id, name: data.name, promo: data.promo, isAdmin: data.isAdmin }, data.token);
             const tutoSeen = localStorage.getItem(`tuto_${data.id}_seen`);
             navigate(tutoSeen ? '/' : '/tuto');
         } catch (err) {
@@ -52,7 +52,7 @@ function Login() {
                 <form className="login-form" onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        placeholder="Pseudo"
+                        placeholder="prénom.nom"
                         value={login}
                         onChange={(e) => setLogin(e.target.value)}
                         className="login-input"

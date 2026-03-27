@@ -14,7 +14,8 @@ db.exec(`
     name TEXT NOT NULL,
     login TEXT NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
-    promo TEXT NOT NULL CHECK(promo IN ('1A', '2A'))
+    promo TEXT NOT NULL CHECK(promo IN ('1A', '2A')),
+    is_admin INTEGER NOT NULL DEFAULT 0
   );
 
   CREATE TABLE IF NOT EXISTS answers (
@@ -44,5 +45,10 @@ db.exec(`
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
 `);
+
+// Migration : ajout is_admin si la colonne n'existe pas encore
+try {
+    db.exec(`ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0`);
+} catch (_) { /* colonne déjà présente */ }
 
 module.exports = db;

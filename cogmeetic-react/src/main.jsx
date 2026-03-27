@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import App from './App.jsx';
-import { getToken } from './api.js';
+import { getToken, getUser } from './api.js';
 
 import Jeux from './pages/Jeux.jsx';
 import Chat from './pages/Chat.jsx';
@@ -27,6 +27,13 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+// Redirige vers / si pas admin
+function AdminRoute({ children }) {
+  if (!getToken()) return <Navigate to="/login" replace />;
+  if (!getUser()?.isAdmin) return <Navigate to="/" replace />;
+  return children;
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -44,7 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/profil" element={<ProtectedRoute><Profil /></ProtectedRoute>} />
           <Route path="/poulpage" element={<ProtectedRoute><Poulpage /></ProtectedRoute>} />
           <Route path="/evenements" element={<ProtectedRoute><Evenements /></ProtectedRoute>} />
-          <Route path="/admin/matches" element={<ProtectedRoute><AdminMatches /></ProtectedRoute>} />
+          <Route path="/admin/matches" element={<AdminRoute><AdminMatches /></AdminRoute>} />
         </Routes>
       </App>
     </BrowserRouter>

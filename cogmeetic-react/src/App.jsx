@@ -2,9 +2,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import './App.css';
 import logoCogmeetic from './images/logo-cogmeetic.png';
+import { getUser } from './api';
 
 function App({ children }) {
   const location = useLocation();
+  const user = getUser();
 
   return (
     <div className="app-root">
@@ -29,8 +31,9 @@ function App({ children }) {
         <NavItem to="/poulpage" label="Poulpes" icon="🐙" currentPath={location.pathname} />
         <NavItem to="/chat" label="Chat" icon="💬" currentPath={location.pathname} />
         <NavItem to="/profil" label="Profil" icon="👤" currentPath={location.pathname} />
-        {/* Si tu veux montrer l'admin dans la nav : */}
-        {/* <NavItem to="/admin/matches" label="Admin" icon="🛠️" currentPath={location.pathname} /> */}
+        {user?.isAdmin && (
+          <NavItem to="/admin/matches" label="Admin" icon="🛠️" currentPath={location.pathname} />
+        )}
       </nav>
     </div>
   );
