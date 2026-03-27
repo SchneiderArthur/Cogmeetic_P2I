@@ -9,6 +9,8 @@ const API_URL = import.meta.env.VITE_API_ADDRESS;
 function Signup() {
     const [step, setStep] = useState(1);
     const [prenom, setPrenom] = useState('');
+    const [nom, setNom] = useState('');
+    const [pseudo, setPseudo] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
     const [promo, setPromo] = useState(null);
@@ -21,6 +23,10 @@ function Signup() {
 
         if (!prenom.trim()) {
             setError("Merci de renseigner ton prénom.");
+            return;
+        }
+        if (!nom.trim()) {
+            setError("Merci de renseigner ton nom de famille.");
             return;
         }
         if (password.length < 4) {
@@ -46,13 +52,16 @@ function Signup() {
 
         setError('');
 
+        const fullName = `${prenom.trim()} ${nom.trim()}`;
+        const login = `${prenom.trim()}.${nom.trim()}`.toLowerCase().replace(/\s+/g, '');
+
         try {
             const res = await fetch(`${API_URL}/api/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: prenom.trim(),
-                    login: prenom.trim().toLowerCase(),
+                    name: fullName,
+                    login,
                     password,
                     promo,
                 }),
@@ -93,6 +102,20 @@ function Signup() {
                                 placeholder="Ton prénom"
                                 value={prenom}
                                 onChange={(e) => setPrenom(e.target.value)}
+                            />
+                            <input
+                                className="login-input"
+                                type="text"
+                                placeholder="Ton nom de famille"
+                                value={nom}
+                                onChange={(e) => setNom(e.target.value)}
+                            />
+                            <input
+                                className="login-input"
+                                type="text"
+                                placeholder="Ton pseudo"
+                                value={pseudo}
+                                onChange={(e) => setPseudo(e.target.value)}
                             />
                             <input
                                 className="login-input"
