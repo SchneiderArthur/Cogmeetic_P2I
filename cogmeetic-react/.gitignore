@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Base de données SQLite (ne jamais versionner)
+cogmeetic-api/*.db
+cogmeetic-api/*.db-shm
+cogmeetic-api/*.db-wal
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
