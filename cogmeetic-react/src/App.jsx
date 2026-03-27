@@ -37,6 +37,9 @@ function App({ children }) {
         {user?.isAdmin && (
           <NavItem to="/admin/events" label="Events" icon="📅" currentPath={location.pathname} />
         )}
+        {user?.isAdmin && (
+          <NavItem to="/admin/users" label="Users" icon="👥" currentPath={location.pathname} />
+        )}
       </nav>
     </div>
   );

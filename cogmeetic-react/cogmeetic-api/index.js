@@ -447,6 +447,29 @@ app.post('/api/top5', authMiddleware, (req, res) => {
     res.json({ status: 'ok', top5: getTop5(req.user.id) });
 });
 
+// Liste tous les users (admin)
+app.get('/api/admin/users', authMiddleware, (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    const users = db.prepare('SELECT id, name, login, promo, is_admin FROM users ORDER BY promo, name').all();
+    res.json(users);
+});
+
+// Réinitialiser le mot de passe d'un user (admin)
+app.put('/api/admin/users/:id/password', authMiddleware, async (req, res) => {
+    if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
+    const userId = Number(req.params.id);
+    const user = db.prepare('SELECT id, name FROM users WHERE id = ?').get(userId);
+    if (!user) return res.status(404).json({ error: 'Utilisateur introuvable' });
+
+    // Génère un mot de passe temporaire lisible
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+    const tempPassword = Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const hash = await bcrypt.hash(tempPassword, 10);
+    db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hash, userId);
+
+    res.json({ tempPassword });
+});
+
 // Matches admin (réservé aux admins)
 app.get('/api/matches', authMiddleware, (req, res) => {
     if (!req.user.isAdmin) return res.status(403).json({ error: 'Accès réservé aux admins' });
