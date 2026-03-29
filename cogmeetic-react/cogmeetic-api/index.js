@@ -491,5 +491,13 @@ function getLocalIp() {
 }
 
 app.listen(PORT, () => {
+    // Passage en admin des logins listés dans ADMIN_LOGINS (séparés par des virgules)
+    const adminLogins = process.env.ADMIN_LOGINS;
+    if (adminLogins) {
+        adminLogins.split(',').map(l => l.trim()).filter(Boolean).forEach(login => {
+            db.prepare('UPDATE users SET is_admin = 1 WHERE login = ?').run(login);
+            console.log(`✅ Admin: ${login}`);
+        });
+    }
     console.log(`🚀 Cogmeetic API running on ${getLocalIp()}:${PORT}`);
 });
