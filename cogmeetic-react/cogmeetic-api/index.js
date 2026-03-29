@@ -292,9 +292,12 @@ app.post('/api/signup', async (req, res) => {
     ).run(name, login, password_hash, promo);
 
     const userId = result.lastInsertRowid;
-    const token = jwt.sign({ id: userId, name, promo, isAdmin: false }, JWT_SECRET, { expiresIn: '30d' });
+    const adminLogins = (process.env.ADMIN_LOGINS || '').split(',').map(l => l.trim()).filter(Boolean);
+    const isAdmin = adminLogins.includes(login);
+    if (isAdmin) db.prepare('UPDATE users SET is_admin = 1 WHERE id = ?').run(userId);
+    const token = jwt.sign({ id: userId, name, promo, isAdmin }, JWT_SECRET, { expiresIn: '30d' });
 
-    res.status(201).json({ id: userId, name, promo, isAdmin: false, token });
+    res.status(201).json({ id: userId, name, promo, isAdmin, token });
 });
 
 // Connexion
