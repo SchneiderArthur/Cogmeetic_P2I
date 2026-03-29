@@ -315,6 +315,13 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ error: 'Identifiants invalides' });
     }
 
+    // Vérifier si le login est dans ADMIN_LOGINS et mettre à jour la DB si besoin
+    const adminLogins = (process.env.ADMIN_LOGINS || '').split(',').map(l => l.trim()).filter(Boolean);
+    if (adminLogins.includes(login) && user.is_admin !== 1) {
+        db.prepare('UPDATE users SET is_admin = 1 WHERE id = ?').run(user.id);
+        user.is_admin = 1;
+    }
+
     const isAdmin = user.is_admin === 1;
     const token = jwt.sign({ id: user.id, name: user.name, promo: user.promo, isAdmin }, JWT_SECRET, { expiresIn: '30d' });
     res.json({ id: user.id, name: user.name, promo: user.promo, isAdmin, token });
