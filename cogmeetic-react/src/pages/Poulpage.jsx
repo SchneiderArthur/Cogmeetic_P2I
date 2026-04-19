@@ -1,5 +1,6 @@
 // src/pages/Poulpage.jsx
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authFetch, getUser } from '../api';
 import '../styles/poulpage.css';
 
@@ -15,6 +16,7 @@ function Poulpage() {
         );
     }
 
+    const navigate = useNavigate();
     const [allUsers, setAllUsers] = useState([]);
     const [top5, setTop5] = useState([null, null, null, null, null]);
     const [autoMode, setAutoMode] = useState(false);
@@ -172,6 +174,16 @@ function Poulpage() {
                                         </option>
                                     ))}
                                 </select>
+
+                                {value && (
+                                    <button
+                                        className="poul-profil-btn"
+                                        onClick={() => navigate(`/profil/${value}`)}
+                                        title="Voir le profil"
+                                    >
+                                        👤
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))}

@@ -23,9 +23,10 @@ export function logout() {
 }
 
 // Wrapper autour de fetch qui injecte Authorization: Bearer <token>
-export function authFetch(path, options = {}) {
+// Redirige vers /login automatiquement si l'API répond 401
+export async function authFetch(path, options = {}) {
     const token = getToken();
-    return fetch(`${API_URL}${path}`, {
+    const res = await fetch(`${API_URL}${path}`, {
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -33,4 +34,10 @@ export function authFetch(path, options = {}) {
             ...options.headers,
         },
     });
+    if (res.status === 401) {
+        logout();
+        window.location.href = '/login';
+        return res;
+    }
+    return res;
 }
