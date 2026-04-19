@@ -1,16 +1,91 @@
-# React + Vite
+# Cogmeetic
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+App web de parrainage ENSC — les élèves 1A et 2A répondent à des questions, classent leurs préférences, et un algorithme propose des binômes parrain/filleul.
 
-Currently, two official plugins are available:
+Démo : https://cogmeetic-p2i.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Frontend : React + Vite + React Router
+- Backend : Node.js + Express
+- BDD : SQLite (better-sqlite3)
+- Auth : JWT
+- Hébergement : Vercel (front) + Railway (back + volume persistant)
 
-## Expanding the ESLint configuration
+## Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+cogmeetic-react/
+├── cogmeetic-api/      backend Express
+│   ├── index.js        routes API
+│   ├── db.js           init SQLite + migrations
+│   └── data/
+│       ├── questions.js  42 questions de compatibilité
+│       └── images/       uploads (événements, avatars)
+├── src/
+│   ├── pages/          une page par route
+│   ├── styles/         CSS par page
+│   ├── api.js          authFetch + session
+│   ├── App.jsx         layout + navbar
+│   └── main.jsx        routes
+└── .env                VITE_API_ADDRESS
+```
+
+---
+
+## Lancer en local
+
+Backend
+
+
+cd cogmeetic-api
+npm install
+node index.js
+# démarre sur localhost:4000
+```
+
+Frontent (dans un autre terminal)
+
+npm install
+npm run dev
+# http://localhost:5173
+```
+
+`.env` à créer à la racine de `cogmeetic-react/` :
+
+```
+VITE_API_ADDRESS="http://localhost:4000"
+```
+
+---
+
+## Variables d'environnement backend
+
+ Variable  Rôle  Exemple 
+
+ `JWT_SECRET`  clé de signature des tokens  `secret-long` 
+ `ADMIN_LOGINS`  logins admin (séparés par `,`)  `arthur.schneider` 
+ `DB_PATH`  chemin du fichier SQLite  `/data/cogmeetic.db` 
+
+Sans `DB_PATH`, la base est créée dans `cogmeetic-api/cogmeetic.db`.
+
+---
+
+## Déploiement
+
+Railway (backend)
+- Root directory : `cogmeetic-react/cogmeetic-api`
+- Volume persistant monté sur `/data`
+- Variables : `JWT_SECRET`, `ADMIN_LOGINS`, `DB_PATH=/data/cogmeetic.db`
+
+Vercel (frontend)
+- Root directory : `cogmeetic-react`
+- Variable : `VITE_API_ADDRESS=https://<url-railway>`
+
+
+
+## Comptes admin
+
+Les logins dans `ADMIN_LOGINS` reçoivent les droits admin automatiquement à la connexion/inscription. Les admins voient trois onglets supplémentaires dans la navbar : gestion des couples, des événements et des utilisateurs.
