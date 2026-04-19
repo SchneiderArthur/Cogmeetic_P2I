@@ -33,10 +33,10 @@
 .profil-card {
     width: 100%;
     max-width: 480px;
-    background: #ffffff;
+    background: linear-gradient(135deg, #ffb6c1, #ffcba4, #c8ffdf, #b7c8ff);
     border-radius: 26px;
     padding: 20px 18px 24px;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* Header (avatar + nom + bouton éditer) */
@@ -67,6 +67,21 @@
     color: #ffffff;
     border: 4px solid #ffffff;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.profil-avatar-circle {
+    position: relative;
+}
+
+.profil-avatar-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
 }
 
 .profil-identity {
@@ -107,7 +122,7 @@
 
 /* Sections (bio, centres d’intérêt, contact) */
 .profil-section {
-    background: #fafafa;
+    background: rgba(255, 255, 255, 0.65);
     border-radius: 22px;
     padding: 14px 14px 16px;
     margin-top: 10px;

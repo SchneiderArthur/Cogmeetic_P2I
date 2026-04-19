@@ -57,10 +57,9 @@ db.exec(`
   );
 `);
 
-// Migration : ajout is_admin si la colonne n'existe pas encore
-try {
-    db.exec(`ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0`);
-} catch (_) { /* colonne déjà présente */ }
+// Migrations
+try { db.exec(`ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0`); } catch (_) {}
+try { db.exec(`ALTER TABLE profiles ADD COLUMN photo TEXT NOT NULL DEFAULT ''`); } catch (_) {}
 
 // Seed événements par défaut si la table est vide
 const eventCount = db.prepare('SELECT COUNT(*) as cnt FROM events').get();

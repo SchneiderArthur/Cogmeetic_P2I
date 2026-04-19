@@ -11,85 +11,100 @@
 }
 
 .profil-view-card {
-    background: #1e1e2e;
-    border-radius: 16px;
-    padding: 1.5rem;
+    background: linear-gradient(135deg, #ffb6c1, #ffcba4, #c8ffdf, #b7c8ff);
+    border-radius: 28px;
+    padding: 20px 18px 24px;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .profil-view-back {
-    background: none;
+    background: rgba(255, 255, 255, 0.6);
     border: none;
-    color: #a78bfa;
-    font-size: 0.95rem;
+    color: #333;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    padding: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
     margin-bottom: 1.25rem;
-    display: block;
+    display: inline-block;
 }
 
 .profil-view-back:hover {
-    text-decoration: underline;
+    background: rgba(255, 255, 255, 0.85);
 }
 
 .profil-view-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .profil-view-avatar {
-    width: 56px;
-    height: 56px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    background: rgba(255, 255, 255, 0.75);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: white;
+    color: #444;
     flex-shrink: 0;
+    overflow: hidden;
+}
+
+.profil-view-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .profil-view-identity h2 {
     margin: 0;
     font-size: 1.2rem;
-    color: #f1f0ff;
+    color: #222;
+    font-weight: 700;
 }
 
 .profil-view-promo {
     font-size: 0.85rem;
-    color: #a78bfa;
+    color: #555;
     font-weight: 600;
 }
 
 .profil-view-section {
-    margin-bottom: 1.25rem;
-    border-top: 1px solid #2d2d3f;
-    padding-top: 1rem;
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 22px;
+    padding: 14px 14px 16px;
+    margin-top: 10px;
 }
 
 .profil-view-section h3 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #a78bfa;
-    margin: 0 0 0.5rem;
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    color: #333;
 }
 
 .profil-view-section p {
     margin: 0;
-    color: #d4d0f0;
+    color: #444;
     font-size: 0.95rem;
     line-height: 1.5;
+    text-align: center;
     white-space: pre-wrap;
 }
 
 .profil-view-empty {
-    color: #666 !important;
+    color: #999 !important;
     font-style: italic;
 }

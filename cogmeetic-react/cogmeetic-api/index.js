@@ -152,6 +152,7 @@ function getProfileData(userId) {
         bio: profile?.bio || '',
         centresInterets: profile?.centres_interets || '',
         contact: profile?.contact || '',
+        photo: profile?.photo || '',
     };
 }
 
@@ -378,19 +379,26 @@ app.get('/api/profile', authMiddleware, (req, res) => {
 
 // Mise à jour du profil (seulement le sien)
 app.put('/api/profile', authMiddleware, (req, res) => {
-    const { bio, centresInterets, contact } = req.body;
+    const { bio, centresInterets, contact, photo } = req.body;
     const userId = req.user.id;
 
     db.prepare(`
-        INSERT INTO profiles (user_id, bio, centres_interets, contact)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO profiles (user_id, bio, centres_interets, contact, photo)
+        VALUES (?, ?, ?, ?, ?)
         ON CONFLICT(user_id) DO UPDATE SET
             bio = excluded.bio,
             centres_interets = excluded.centres_interets,
-            contact = excluded.contact
-    `).run(userId, bio || '', centresInterets || '', contact || '');
+            contact = excluded.contact,
+            photo = excluded.photo
+    `).run(userId, bio || '', centresInterets || '', contact || '', photo || '');
 
     res.json(getProfileData(userId));
+});
+
+// Upload avatar (tout utilisateur connecté)
+app.post('/api/upload/avatar', authMiddleware, upload.single('image'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'Aucun fichier reçu' });
+    res.json({ url: `/images/${req.file.filename}` });
 });
 
 // Profil par ID

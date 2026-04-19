@@ -1,8 +1,10 @@
 // src/pages/Profil.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authFetch, getUser, logout } from '../api';
 import '../styles/profil.css';
+
+const API_URL = import.meta.env.VITE_API_ADDRESS;
 
 function Profil() {
     const navigate = useNavigate();
@@ -23,8 +25,9 @@ function Profil() {
     const [error, setError] = useState(null);
     const [message, setMessage] = useState(null);
 
-    // mode lecture / édition
     const [editing, setEditing] = useState(false);
+    const [uploadingPhoto, setUploadingPhoto] = useState(false);
+    const photoInputRef = useRef(null);
 
     // Charger le profil depuis le backend
     useEffect(() => {
@@ -60,6 +63,39 @@ function Profil() {
         setMessage(null);
     }
 
+    async function handlePhotoUpload(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setUploadingPhoto(true);
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+            const res = await fetch(`${API_URL}/api/upload/avatar`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                body: formData,
+            });
+            if (!res.ok) throw new Error();
+            const { url } = await res.json();
+            const saveRes = await authFetch('/api/profile', {
+                method: 'PUT',
+                body: JSON.stringify({
+                    bio: profile.bio || '',
+                    centresInterets: profile.centresInterets || '',
+                    contact: profile.contact || '',
+                    photo: url,
+                }),
+            });
+            if (!saveRes.ok) throw new Error();
+            setProfile(await saveRes.json());
+            setMessage('Photo mise à jour ✅');
+        } catch {
+            setError('Erreur lors du téléchargement de la photo');
+        } finally {
+            setUploadingPhoto(false);
+        }
+    }
+
     async function handleSave() {
         if (!profile) return;
 
@@ -74,6 +110,7 @@ function Profil() {
                     bio: profile.bio || '',
                     centresInterets: profile.centresInterets || '',
                     contact: profile.contact || '',
+                    photo: profile.photo || '',
                 }),
             });
 
@@ -101,6 +138,8 @@ function Profil() {
             .join('')
             .toUpperCase() || '🙂';
 
+    const photoSrc = profile.photo ? `${API_URL}${profile.photo}` : null;
+
     return (
         <div className="page-container profil-page">
             {/* Bouton déconnexion en haut à droite */}
@@ -114,9 +153,29 @@ function Profil() {
                 {/* Header avec avatar + nom + bouton modifier */}
                 <header className="profil-header">
                     <div className="profil-header-main">
-                        <div className="profil-avatar-circle">
-                            <span>{initials}</span>
+                        <div
+                            className="profil-avatar-circle"
+                            onClick={editing ? () => photoInputRef.current?.click() : undefined}
+                            style={editing ? { cursor: 'pointer' } : {}}
+                            title={editing ? 'Changer la photo' : ''}
+                        >
+                            {photoSrc
+                                ? <img src={photoSrc} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                                : <span>{initials}</span>
+                            }
+                            {editing && (
+                                <div className="profil-avatar-overlay">
+                                    {uploadingPhoto ? '...' : '📷'}
+                                </div>
+                            )}
                         </div>
+                        <input
+                            ref={photoInputRef}
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={handlePhotoUpload}
+                        />
                         <div className="profil-identity">
                             <h2 className="profil-name">{profile.name}</h2>
                             <p className="profil-promo">{profile.promo}</p>

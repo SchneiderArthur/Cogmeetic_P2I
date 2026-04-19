@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { authFetch } from '../api';
 import '../styles/profilView.css';
 
+const API_URL = import.meta.env.VITE_API_ADDRESS;
+
 function ProfilView() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -34,6 +36,8 @@ function ProfilView() {
             .join('')
             .toUpperCase() || '🙂';
 
+    const photoSrc = profile.photo ? `${API_URL}${profile.photo}` : null;
+
     return (
         <div className="page-container profil-view-page">
             <div className="profil-view-card">
@@ -42,7 +46,12 @@ function ProfilView() {
                 </button>
 
                 <header className="profil-view-header">
-                    <div className="profil-view-avatar">{initials}</div>
+                    <div className="profil-view-avatar">
+                        {photoSrc
+                            ? <img src={photoSrc} alt="avatar" />
+                            : initials
+                        }
+                    </div>
                     <div className="profil-view-identity">
                         <h2>{profile.name}</h2>
                         <span className="profil-view-promo">{profile.promo}</span>
